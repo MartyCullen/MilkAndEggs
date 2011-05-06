@@ -1,0 +1,371 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D3623260D0F684500981E51 /* MilkAndEggsAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* MilkAndEggsAppDelegate.m */; };
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		28193060112F816700ECF9B4 /* MilkAndEggs.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2819305F112F816700ECF9B4 /* MilkAndEggs.xcdatamodeld */; };
+		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
+		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
+		28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28D801B30F44B63D00FB423F /* CoreData.framework */; };
+		A670AB6C134E269C00B5633E /* WhereAreMyFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB6B134E269C00B5633E /* WhereAreMyFiles.m */; };
+		A670AB82134E275E00B5633E /* ActiveListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB6E134E275E00B5633E /* ActiveListViewController.m */; };
+		A670AB83134E275E00B5633E /* ActiveListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A670AB6F134E275E00B5633E /* ActiveListViewController.xib */; };
+		A670AB84134E275E00B5633E /* EditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB71134E275E00B5633E /* EditItemViewController.m */; };
+		A670AB85134E275E00B5633E /* EditItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A670AB72134E275E00B5633E /* EditItemViewController.xib */; };
+		A670AB87134E275E00B5633E /* ItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB76134E275E00B5633E /* ItemsViewController.m */; };
+		A670AB88134E275E00B5633E /* ItemsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A670AB77134E275E00B5633E /* ItemsViewController.xib */; };
+		A670AB8A134E275E00B5633E /* ListsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB7B134E275E00B5633E /* ListsViewController.m */; };
+		A670AB8B134E275E00B5633E /* ListsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A670AB7C134E275E00B5633E /* ListsViewController.xib */; };
+		A670AB8D134E275E00B5633E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A670AB80134E275E00B5633E /* SettingsViewController.m */; };
+		A670AB8E134E275E00B5633E /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A670AB81134E275E00B5633E /* SettingsViewController.xib */; };
+		A6AD3A3713567A9E0004C04D /* Item.m in Sources */ = {isa = PBXBuildFile; fileRef = A6AD3A3213567A9E0004C04D /* Item.m */; };
+		A6AD3A3813567A9E0004C04D /* List.m in Sources */ = {isa = PBXBuildFile; fileRef = A6AD3A3413567A9E0004C04D /* List.m */; };
+		A6AD3A3913567A9E0004C04D /* Selection.m in Sources */ = {isa = PBXBuildFile; fileRef = A6AD3A3613567A9E0004C04D /* Selection.m */; };
+		A6D36E1913566B7C00C4CF7C /* EditListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A6D36E1713566B7C00C4CF7C /* EditListViewController.m */; };
+		A6D36E1A13566B7C00C4CF7C /* EditListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6D36E1813566B7C00C4CF7C /* EditListViewController.xib */; };
+		B1DE548E1368DF6F002CFEEB /* EditSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B1DE548C1368DF6F002CFEEB /* EditSelectionViewController.m */; };
+		B1DE548F1368DF6F002CFEEB /* EditSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B1DE548D1368DF6F002CFEEB /* EditSelectionViewController.xib */; };
+		B1DE54A313722B0C002CFEEB /* BlankCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = B1DE54A113722B0C002CFEEB /* BlankCheck.png */; };
+		B1DE54A413722B0C002CFEEB /* GrnCheck.png in Resources */ = {isa = PBXBuildFile; fileRef = B1DE54A213722B0C002CFEEB /* GrnCheck.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D3623240D0F684500981E51 /* MilkAndEggsAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MilkAndEggsAppDelegate.h; sourceTree = "<group>"; };
+		1D3623250D0F684500981E51 /* MilkAndEggsAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MilkAndEggsAppDelegate.m; sourceTree = "<group>"; };
+		1D6058910D05DD3D006BFB54 /* MilkAndEggs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MilkAndEggs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
+		28C3AD890F43EF2300507BA6 /* MilkAndEggs.xcdatamodel */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.xcdatamodel; path = MilkAndEggs.xcdatamodel; sourceTree = "<group>"; };
+		28D801B30F44B63D00FB423F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* MilkAndEggs_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MilkAndEggs_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* MilkAndEggs-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MilkAndEggs-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A670AB6A134E269C00B5633E /* WhereAreMyFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WhereAreMyFiles.h; path = Classes/WhereAreMyFiles.h; sourceTree = "<group>"; };
+		A670AB6B134E269C00B5633E /* WhereAreMyFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WhereAreMyFiles.m; path = Classes/WhereAreMyFiles.m; sourceTree = "<group>"; };
+		A670AB6D134E275E00B5633E /* ActiveListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveListViewController.h; sourceTree = "<group>"; };
+		A670AB6E134E275E00B5633E /* ActiveListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveListViewController.m; sourceTree = "<group>"; };
+		A670AB6F134E275E00B5633E /* ActiveListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActiveListViewController.xib; sourceTree = "<group>"; };
+		A670AB70134E275E00B5633E /* EditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditItemViewController.h; sourceTree = "<group>"; };
+		A670AB71134E275E00B5633E /* EditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditItemViewController.m; sourceTree = "<group>"; };
+		A670AB72134E275E00B5633E /* EditItemViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditItemViewController.xib; sourceTree = "<group>"; };
+		A670AB75134E275E00B5633E /* ItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemsViewController.h; sourceTree = "<group>"; };
+		A670AB76134E275E00B5633E /* ItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ItemsViewController.m; sourceTree = "<group>"; };
+		A670AB77134E275E00B5633E /* ItemsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemsViewController.xib; sourceTree = "<group>"; };
+		A670AB7A134E275E00B5633E /* ListsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListsViewController.h; sourceTree = "<group>"; };
+		A670AB7B134E275E00B5633E /* ListsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListsViewController.m; sourceTree = "<group>"; };
+		A670AB7C134E275E00B5633E /* ListsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListsViewController.xib; sourceTree = "<group>"; };
+		A670AB7F134E275E00B5633E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		A670AB80134E275E00B5633E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		A670AB81134E275E00B5633E /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
+		A6AD3A3113567A9E0004C04D /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
+		A6AD3A3213567A9E0004C04D /* Item.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Item.m; sourceTree = "<group>"; };
+		A6AD3A3313567A9E0004C04D /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
+		A6AD3A3413567A9E0004C04D /* List.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = List.m; sourceTree = "<group>"; };
+		A6AD3A3513567A9E0004C04D /* Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Selection.h; sourceTree = "<group>"; };
+		A6AD3A3613567A9E0004C04D /* Selection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Selection.m; sourceTree = "<group>"; };
+		A6D36E1613566B7C00C4CF7C /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
+		A6D36E1713566B7C00C4CF7C /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
+		A6D36E1813566B7C00C4CF7C /* EditListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditListViewController.xib; sourceTree = "<group>"; };
+		B1DE548B1368DF6F002CFEEB /* EditSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSelectionViewController.h; sourceTree = "<group>"; };
+		B1DE548C1368DF6F002CFEEB /* EditSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSelectionViewController.m; sourceTree = "<group>"; };
+		B1DE548D1368DF6F002CFEEB /* EditSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditSelectionViewController.xib; sourceTree = "<group>"; };
+		B1DE54A113722B0C002CFEEB /* BlankCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BlankCheck.png; sourceTree = "<group>"; };
+		B1DE54A213722B0C002CFEEB /* GrnCheck.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GrnCheck.png; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				28D801B40F44B63D00FB423F /* CoreData.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A670AB6D134E275E00B5633E /* ActiveListViewController.h */,
+				A670AB6E134E275E00B5633E /* ActiveListViewController.m */,
+				A670AB6F134E275E00B5633E /* ActiveListViewController.xib */,
+				A670AB70134E275E00B5633E /* EditItemViewController.h */,
+				A670AB71134E275E00B5633E /* EditItemViewController.m */,
+				A670AB72134E275E00B5633E /* EditItemViewController.xib */,
+				A670AB75134E275E00B5633E /* ItemsViewController.h */,
+				A670AB76134E275E00B5633E /* ItemsViewController.m */,
+				A670AB77134E275E00B5633E /* ItemsViewController.xib */,
+				A670AB7A134E275E00B5633E /* ListsViewController.h */,
+				A670AB7B134E275E00B5633E /* ListsViewController.m */,
+				A670AB7C134E275E00B5633E /* ListsViewController.xib */,
+				A6D36E1613566B7C00C4CF7C /* EditListViewController.h */,
+				A6D36E1713566B7C00C4CF7C /* EditListViewController.m */,
+				A6D36E1813566B7C00C4CF7C /* EditListViewController.xib */,
+				A670AB7F134E275E00B5633E /* SettingsViewController.h */,
+				A670AB80134E275E00B5633E /* SettingsViewController.m */,
+				A670AB81134E275E00B5633E /* SettingsViewController.xib */,
+				1D3623240D0F684500981E51 /* MilkAndEggsAppDelegate.h */,
+				1D3623250D0F684500981E51 /* MilkAndEggsAppDelegate.m */,
+				A6AD3A3113567A9E0004C04D /* Item.h */,
+				A6AD3A3213567A9E0004C04D /* Item.m */,
+				A6AD3A3313567A9E0004C04D /* List.h */,
+				A6AD3A3413567A9E0004C04D /* List.m */,
+				A6AD3A3513567A9E0004C04D /* Selection.h */,
+				A6AD3A3613567A9E0004C04D /* Selection.m */,
+				B1DE548B1368DF6F002CFEEB /* EditSelectionViewController.h */,
+				B1DE548C1368DF6F002CFEEB /* EditSelectionViewController.m */,
+				B1DE548D1368DF6F002CFEEB /* EditSelectionViewController.xib */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* MilkAndEggs.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				A670AB6A134E269C00B5633E /* WhereAreMyFiles.h */,
+				A670AB6B134E269C00B5633E /* WhereAreMyFiles.m */,
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				32CA4F630368D1EE00C91783 /* MilkAndEggs_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B1DE54A113722B0C002CFEEB /* BlankCheck.png */,
+				B1DE54A213722B0C002CFEEB /* GrnCheck.png */,
+				2819305F112F816700ECF9B4 /* MilkAndEggs.xcdatamodeld */,
+				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
+				8D1107310486CEB800E47090 /* MilkAndEggs-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				28D801B30F44B63D00FB423F /* CoreData.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* MilkAndEggs */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MilkAndEggs" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MilkAndEggs;
+			productName = MilkAndEggs;
+			productReference = 1D6058910D05DD3D006BFB54 /* MilkAndEggs.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MilkAndEggs" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* MilkAndEggs */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
+				A670AB83134E275E00B5633E /* ActiveListViewController.xib in Resources */,
+				A670AB85134E275E00B5633E /* EditItemViewController.xib in Resources */,
+				A670AB88134E275E00B5633E /* ItemsViewController.xib in Resources */,
+				A670AB8B134E275E00B5633E /* ListsViewController.xib in Resources */,
+				A670AB8E134E275E00B5633E /* SettingsViewController.xib in Resources */,
+				A6D36E1A13566B7C00C4CF7C /* EditListViewController.xib in Resources */,
+				B1DE548F1368DF6F002CFEEB /* EditSelectionViewController.xib in Resources */,
+				B1DE54A313722B0C002CFEEB /* BlankCheck.png in Resources */,
+				B1DE54A413722B0C002CFEEB /* GrnCheck.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				1D3623260D0F684500981E51 /* MilkAndEggsAppDelegate.m in Sources */,
+				28193060112F816700ECF9B4 /* MilkAndEggs.xcdatamodeld in Sources */,
+				A670AB6C134E269C00B5633E /* WhereAreMyFiles.m in Sources */,
+				A670AB82134E275E00B5633E /* ActiveListViewController.m in Sources */,
+				A670AB84134E275E00B5633E /* EditItemViewController.m in Sources */,
+				A670AB87134E275E00B5633E /* ItemsViewController.m in Sources */,
+				A670AB8A134E275E00B5633E /* ListsViewController.m in Sources */,
+				A670AB8D134E275E00B5633E /* SettingsViewController.m in Sources */,
+				A6D36E1913566B7C00C4CF7C /* EditListViewController.m in Sources */,
+				A6AD3A3713567A9E0004C04D /* Item.m in Sources */,
+				A6AD3A3813567A9E0004C04D /* List.m in Sources */,
+				A6AD3A3913567A9E0004C04D /* Selection.m in Sources */,
+				B1DE548E1368DF6F002CFEEB /* EditSelectionViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MilkAndEggs_Prefix.pch;
+				INFOPLIST_FILE = "MilkAndEggs-Info.plist";
+				PRODUCT_NAME = MilkAndEggs;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = MilkAndEggs_Prefix.pch;
+				INFOPLIST_FILE = "MilkAndEggs-Info.plist";
+				PRODUCT_NAME = MilkAndEggs;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MilkAndEggs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MilkAndEggs" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2819305F112F816700ECF9B4 /* MilkAndEggs.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				28C3AD890F43EF2300507BA6 /* MilkAndEggs.xcdatamodel */,
+			);
+			currentVersion = 28C3AD890F43EF2300507BA6 /* MilkAndEggs.xcdatamodel */;
+			path = MilkAndEggs.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}
