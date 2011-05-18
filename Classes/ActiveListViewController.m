@@ -3,7 +3,7 @@
 //  MilkAndEggs
 //
 //  Created by Mickey Phelps on 3/9/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Milk And Eggs, Inc. All rights reserved.
 //
 
 #import "ActiveListViewController.h"
