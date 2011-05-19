@@ -10,7 +10,7 @@
 #import "EditSelectionViewController.h"
 #import "Selection.h"
 #import "Item.h"
-
+#import "List.h"
 
 @interface ActiveListViewController  : UIViewController 
 <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate>
@@ -18,6 +18,7 @@
 	UISearchBar *selectionSearchBar;
 	UITableView *selectionTableView;
 	UIBarButtonItem *savedButton;
+   List *activeList;
 	
 @private
 	NSFetchedResultsController *_fetchedResultsController;
@@ -27,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet UISearchBar *selectionSearchBar;
 @property (nonatomic, retain) IBOutlet UITableView *selectionTableView;
 @property (nonatomic, retain) UIBarButtonItem *savedButton;
+@property (nonatomic, retain) List *activeList;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 

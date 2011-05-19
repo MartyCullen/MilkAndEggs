@@ -76,12 +76,12 @@
 - (void) viewDidAppear: (BOOL) animated
 {
 	[super viewDidAppear: animated];
-	
-	UIBarButtonItem *editButton = self.editButtonItem;
-	[editButton setTarget: self];
-	[editButton setAction: @selector(toggleEdit)];
-	self.navigationItem.rightBarButtonItem = editButton;
-	
+	if (!self.itemTableView.editing) {
+      UIBarButtonItem *editButton = self.editButtonItem;
+      [editButton setTarget: self];
+      [editButton setAction: @selector(toggleEdit)];
+      self.navigationItem.rightBarButtonItem = editButton;
+	}
 	[self.itemTableView reloadData];
 }
 

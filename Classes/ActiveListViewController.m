@@ -14,6 +14,7 @@
 @synthesize selectionSearchBar;
 @synthesize selectionTableView;
 @synthesize savedButton;
+@synthesize activeList;
 
 @synthesize fetchedResultsController=_fetchedResultsController;
 
@@ -54,9 +55,47 @@
 
 - (void) viewWillAppear:(BOOL)animated
 {
-	self.fetchedResultsController.delegate = self;
 	
-	NSError *error = nil;
+   // Create the fetch request for the entity.
+   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	// Edit the entity name as appropriate.
+	MilkAndEggsAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+	NSManagedObjectContext *managedObjectContext = appDelegate.managedObjectContext;
+	
+   NSEntityDescription *entity = [NSEntityDescription entityForName: @"List" 
+                                             inManagedObjectContext: managedObjectContext];
+   
+   [fetchRequest setEntity: entity];
+   
+   NSPredicate *setPred = [NSPredicate predicateWithFormat: @"listActive == TRUE"];
+   
+	//NSPredicate *setPred = [self getListPredicate];
+	
+	[fetchRequest setPredicate:setPred];	
+   
+	// Edit the sort key as appropriate.
+   //NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"selectionSequence" 
+   //                                                               ascending: YES 
+   //                                                                selector: @selector(compare:)];
+	
+   //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+   
+   //[fetchRequest setSortDescriptors: sortDescriptors];
+   NSError *error = nil;
+   
+   NSArray *listObjects = [managedObjectContext executeFetchRequest:fetchRequest
+                                                              error:&error];
+   if (![listObjects count]) {
+      NSLog(@"No active list");
+      self.navigationItem.title =@"No Active List";
+   } else {
+      self.activeList = [listObjects objectAtIndex:0];
+      self.navigationItem.title = self.activeList.listName;
+   }
+   
+   self.fetchedResultsController.delegate = self;
+	
+	
 	if (![self.fetchedResultsController performFetch: &error]) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
                                                                                  @"Error Loading Data")
@@ -76,11 +115,14 @@
 - (void) viewDidAppear: (BOOL) animated
 {
 	[super viewDidAppear: animated];
-	
-	UIBarButtonItem *editButton = self.editButtonItem;
-	[editButton setTarget: self];
-	[editButton setAction: @selector(toggleEdit)];
-	self.navigationItem.rightBarButtonItem = editButton;
+	if (!self.selectionTableView.editing) {
+      UIBarButtonItem *editButton = self.editButtonItem;
+      [editButton setTarget: self];
+      [editButton setAction: @selector(toggleEdit)];
+      
+      self.navigationItem.rightBarButtonItem = editButton;
+   }
+
 	
 	[self.selectionTableView reloadData];
 }
@@ -179,6 +221,8 @@
    
 	// If appropriate, configure the new managed object.
 	
+   [self.activeList addListContainsSelectionObject:newManagedObject];
+   
 	// Save the context.
 	
 	NSError *error = nil;
@@ -420,12 +464,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 {
 	NSPredicate *setPredicate = nil;
 	if ([self.selectionSearchBar.text length] > 0) {
-		setPredicate = [NSPredicate predicateWithFormat: @"selectionContainsItem.itemName contains[cd] %@", 
+		setPredicate = [NSPredicate predicateWithFormat: @"selectionContainsItem.itemName contains[cd] %@ AND selectionOfList.listActive == FALSE", 
                       self.selectionSearchBar.text];
 	}
 	
 	if (setPredicate == nil) {
-		setPredicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
+		//setPredicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
+      setPredicate = [NSPredicate predicateWithFormat: @"selectionOfList.listActive == FALSE"];
 	}
 	
 	return setPredicate;
