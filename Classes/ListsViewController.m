@@ -257,9 +257,17 @@
         cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle 
 									   reuseIdentifier: CellIdentifier] 
 				autorelease];
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
+    
+    int count = [cellManagedObject.listContainsSelection count];
+    
 	cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
-	cell.detailTextLabel.text = [NSString stringWithFormat: @"active = %@",cellManagedObject.listActive];
+    
+    
+    
+	cell.detailTextLabel.text = [NSString stringWithFormat:@"%3d items - %@", count, cellManagedObject.listDescription];
 	cell.textLabel.text = cellManagedObject.listName;
 	cell.selected = [cellManagedObject.listActive boolValue];
 	
@@ -328,9 +336,56 @@ canMoveRowAtIndexPath: (NSIndexPath *) indexPath
 - (void) tableView: (UITableView *) tableView 
 didSelectRowAtIndexPath: (NSIndexPath *) indexPath 
 {
+    NSManagedObjectContext *managedObjectContext = [self.fetchedResultsController managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"List" 
+                                              inManagedObjectContext: managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    
+    
+    [fetchRequest setEntity: entity];
+    
+	NSPredicate *setPred = [NSPredicate predicateWithFormat:@"listActive == TRUE"];
+	
+    
+	[fetchRequest setPredicate:setPred];	
+    NSError *error;
+    
+
+    NSArray *lists = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    for (List *listItem in lists){
+        listItem.listActive = [NSNumber numberWithBool:FALSE ];
+    }
+    
+    
 	List *cellManagedObject = [self.fetchedResultsController objectAtIndexPath: indexPath]; 
-	cellManagedObject.listActive = [NSNumber numberWithBool:![cellManagedObject.listActive boolValue] ];
+	cellManagedObject.listActive = [NSNumber numberWithBool:TRUE ];
 	//cellManagedObject.listActive = [cellManagedObject.listActive boolValue] ? 0 : 1;
+    [managedObjectContext save:&error];
+ 
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.selected = NO;
+    
+	if ([cellManagedObject.listActive boolValue]) {
+        cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
+    }
+
+    
+    [tableView reloadData];
+}
+-(void)tableView:(UITableView *)tableView 
+ willDisplayCell:(UITableViewCell *)cell 
+forRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+	List *selectedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if ([selectedObject.listActive boolValue]) {
+        cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
+    }
 }
 
 
@@ -550,6 +605,21 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 	}
 	
 	[self.listTableView reloadData];	
+}
+
+#pragma mark -
+#pragma mark ActionSheet Delegate
+
+-(void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex 
+{
+    switch (buttonIndex) {
+        case 0 :
+            break;
+        case 1 :
+            break;
+        default:
+            break;
+    }
 }
 
 @end

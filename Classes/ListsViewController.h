@@ -10,7 +10,7 @@
 #import "EditListViewController.h"
 
 @interface ListsViewController : UIViewController 
-<UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate>
+<UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate, UIActionSheetDelegate>
 {
 	UISearchBar *listSearchBar;
 	UITableView *listTableView;

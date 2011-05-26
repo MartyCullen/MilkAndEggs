@@ -10,21 +10,34 @@
 #import "EditItemViewController.h"
 #import "Item.h"
 
+typedef enum ScreenStatuses {
+    kScreenListEdit,
+    kScreenListDisplay,
+    kScreenListSearch,
+    kScreenEditSearch
+} ScreenStatus;
+
+
+
 @interface ItemsViewController : UIViewController 
 <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate>
 {
 	UISearchBar *itemSearchBar;
 	UITableView *itemTableView;
 	UIBarButtonItem *savedButton;
-	
+	UIToolbar *toolBar;
+    ScreenStatus currentStatus;
+    
 @private
 	NSFetchedResultsController *_fetchedResultsController;
 
 }
 
-@property (nonatomic, retain) IBOutlet UISearchBar *itemSearchBar;
+@property ScreenStatus currentStatus;
+@property (nonatomic, retain) UISearchBar *itemSearchBar;
 @property (nonatomic, retain) IBOutlet UITableView *itemTableView;
 @property (nonatomic, retain) UIBarButtonItem *savedButton;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolBar;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
@@ -32,5 +45,6 @@
 - (void) toggleEdit;
 - (void) insertNewObject;
 - (NSPredicate *) getListPredicate;
+- (void) drawButtons;
 
 @end

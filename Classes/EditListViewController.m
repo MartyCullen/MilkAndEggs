@@ -40,7 +40,8 @@
 	NSManagedObjectContext *context = appDelegate.managedObjectContext;
 	
 	self.list.listName = self.iname.text;
-	self.list.listDescription = self.idesc.text;
+    
+	self.list.listDescription = [self.idesc.text length] == 0 ? @"" : self.idesc.text;
 	
 	NSError *error;
 	

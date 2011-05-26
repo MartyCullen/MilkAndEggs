@@ -302,6 +302,8 @@
       cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle 
                                      reuseIdentifier: CellIdentifier] 
               autorelease];
+       
+       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
    }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	cell.detailTextLabel.text = cellManagedObject.selectionContainsItem.itemDescription;
@@ -464,13 +466,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 {
 	NSPredicate *setPredicate = nil;
 	if ([self.selectionSearchBar.text length] > 0) {
-		setPredicate = [NSPredicate predicateWithFormat: @"selectionContainsItem.itemName contains[cd] %@ AND selectionOfList.listActive == FALSE", 
+		setPredicate = [NSPredicate predicateWithFormat: @"selectionContainsItem.itemName contains[cd] %@ AND selectionOfList.listActive == TRUE", 
                       self.selectionSearchBar.text];
 	}
 	
 	if (setPredicate == nil) {
 		//setPredicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
-      setPredicate = [NSPredicate predicateWithFormat: @"selectionOfList.listActive == FALSE"];
+      setPredicate = [NSPredicate predicateWithFormat: @"selectionOfList.listActive == TRUE"];
 	}
 	
 	return setPredicate;

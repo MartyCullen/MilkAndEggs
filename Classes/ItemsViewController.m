@@ -14,6 +14,8 @@
 @synthesize itemSearchBar;
 @synthesize itemTableView;
 @synthesize savedButton;
+@synthesize toolBar;
+@synthesize currentStatus;
 
 @synthesize fetchedResultsController=_fetchedResultsController;
 
@@ -33,6 +35,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
+    currentStatus = kScreenListDisplay;
+    
 	NSError *error = nil;
 	_fetchedResultsController = nil;
 	if (![[self fetchedResultsController] performFetch: &error]) {
@@ -49,6 +53,12 @@
 		[alert release];
 	}
 	
+    self.itemSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 200, 40)];
+    self.itemSearchBar.delegate = self;
+    
+    [self drawButtons];
+    
+    
 }
 
 
@@ -547,6 +557,41 @@ accessoryButtonTappedForRowWithIndexPath: (NSIndexPath *) indexPath
 	 }
 	 
 	 [self.itemTableView reloadData];	
+}
+
+#pragma mark -
+#pragma mark Toolbar methods
+
+-(void) drawButtons 
+{
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchPressed)];
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPressed)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    
+    switch (currentStatus) {
+        case kScreenListDisplay :
+            flexSpace.width = 20;
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:editButton, flexSpace, searchButton, flexSpace, addButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];
+            
+            break;
+            
+        default:
+            break;
+    }
+    
+    [flexSpace release];
+    [addButton release];
+    [searchButton release];
+    [editButton release];
+    [doneButton release];
+    [cancelButton release];
+  
 }
 
 @end
