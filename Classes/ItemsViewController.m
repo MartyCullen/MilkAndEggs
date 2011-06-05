@@ -86,12 +86,12 @@
 - (void) viewDidAppear: (BOOL) animated
 {
 	[super viewDidAppear: animated];
-	if (!self.itemTableView.editing) {
-      UIBarButtonItem *editButton = self.editButtonItem;
-      [editButton setTarget: self];
-      [editButton setAction: @selector(toggleEdit)];
-      self.navigationItem.rightBarButtonItem = editButton;
-	}
+//	if (!self.itemTableView.editing) {
+//      UIBarButtonItem *editButton = self.editButtonItem;
+//      [editButton setTarget: self];
+//      [editButton setAction: @selector(toggleEdit)];
+//      self.navigationItem.rightBarButtonItem = editButton;
+//	}
 	[self.itemTableView reloadData];
 }
 
@@ -116,32 +116,23 @@
 	[self.itemSearchBar resignFirstResponder];
 }
 
-- (void) toggleEdit
+- (void) editPressed
 {
-	BOOL editing = !self.itemTableView.editing;
-	
-	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-																			   target:self 
-																			   action:@selector(insertNewObject)];
-	UIBarButtonItem *editButton = self.editButtonItem;
-	
-	if (editing) {
-		self.savedButton = self.navigationItem.leftBarButtonItem;
-		self.navigationItem.leftBarButtonItem = editButton;
-		self.navigationItem.rightBarButtonItem = addButton;
-		self.navigationItem.leftBarButtonItem.title = @"Done";
-	} else {
-		self.navigationItem.leftBarButtonItem = self.savedButton;
-		[editButton setTarget: self];
-		[editButton setAction: @selector(toggleEdit)];
-		self.navigationItem.rightBarButtonItem = editButton;
-		self.navigationItem.rightBarButtonItem.title = @"Edit";
-	}
-	
-	[addButton release];	
-	
-	[self.itemTableView setEditing: editing animated: YES];
-	
+	[self.itemTableView setEditing: TRUE animated: YES];
+
+    self.currentStatus = kScreenListEdit;
+    
+    [self drawButtons];
+}
+
+-(void) donePressed
+{
+	[self.itemTableView setEditing: FALSE animated: YES];
+    
+    self.currentStatus = kScreenListDisplay;
+    
+    [self drawButtons];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -178,7 +169,7 @@
 
 - (void)insertNewObject 
 {
-	[self toggleEdit];
+	// [self toggleEdit];
 	
 	// Create a new instance of the entity managed by the fetched results controller.
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -566,7 +557,7 @@ accessoryButtonTappedForRowWithIndexPath: (NSIndexPath *) indexPath
 {
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addPressed)];
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
     UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchPressed)];
     UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPressed)];
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
@@ -574,13 +565,19 @@ accessoryButtonTappedForRowWithIndexPath: (NSIndexPath *) indexPath
     
     switch (currentStatus) {
         case kScreenListDisplay :
-            flexSpace.width = 20;
+        {
             NSArray *itemsArray = [[NSArray alloc] initWithObjects:editButton, flexSpace, searchButton, flexSpace, addButton,  nil];
             [toolBar setItems:itemsArray animated:YES];
             [itemsArray release];
-            
+        }    
             break;
-            
+        case kScreenListEdit:
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:doneButton, flexSpace, searchButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];            
+        }
+            break;
         default:
             break;
     }
