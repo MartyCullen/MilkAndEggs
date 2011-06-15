@@ -14,6 +14,8 @@
 @synthesize listSearchBar;
 @synthesize listTableView;
 @synthesize savedButton;
+@synthesize toolBar;
+@synthesize currentStatus;
 
 @synthesize fetchedResultsController=_fetchedResultsController;
 
@@ -32,7 +34,10 @@
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
-	
+
+    currentStatus = kScreenListDisplay;
+
+    
 	NSError *error = nil;
 	_fetchedResultsController = nil;
 	if (![[self fetchedResultsController] performFetch: &error]) {
@@ -48,7 +53,7 @@
 		[alert show];
 		[alert release];
 	}
-	
+    [self drawButtons];
 }
 
 
@@ -76,12 +81,12 @@
 - (void) viewDidAppear: (BOOL) animated
 {
 	[super viewDidAppear: animated];
-	if (!self.listTableView.editing) {
+/*	if (!self.listTableView.editing) {
       UIBarButtonItem *editButton = self.editButtonItem;
       [editButton setTarget: self];
       [editButton setAction: @selector(toggleEdit)];
       self.navigationItem.rightBarButtonItem = editButton;
-	}
+	} */
 	[self.listTableView reloadData];
 }
 
@@ -106,6 +111,49 @@
 	[self.listSearchBar resignFirstResponder];
 }
 
+-(void) returnState {
+    [self.listTableView setEditing: FALSE animated: YES];
+    
+    self.currentStatus = kScreenListDisplay;
+    
+    [self drawButtons];
+}
+
+-(void) cancelPressed {
+    // clear out the search text
+    self.listSearchBar.text = @"";
+    // refreshes from coredata
+    [self getListPredicate];
+    // return first button bar state
+    [self returnState];
+}
+
+- (void) editPressed
+{
+	[self.listTableView setEditing: TRUE animated: YES];
+    
+    self.currentStatus = kScreenListEdit;
+    
+    [self drawButtons];
+}
+
+-(void) donePressed
+{
+    
+    [self returnState];
+    
+}
+
+-(void) searchPressed {
+    [self.listTableView setEditing: FALSE animated: YES];
+    
+    self.currentStatus = kScreenListSearch;
+    
+    [self drawButtons];
+}
+
+
+/*
 - (void) toggleEdit
 {
 	BOOL editing = !self.listTableView.editing;
@@ -133,7 +181,8 @@
 	[self.listTableView setEditing: editing animated: YES];
 	
 }
-
+*/
+ 
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
@@ -168,7 +217,7 @@
 
 - (void)insertNewObject 
 {
-	[self toggleEdit];
+//	[self toggleEdit];
 	
 	// Create a new instance of the entity managed by the fetched results controller.
     NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
@@ -621,5 +670,66 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             break;
     }
 }
+
+
+#pragma mark -
+#pragma mark Toolbar methods
+
+-(void) drawButtons 
+{
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchPressed)];
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPressed)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    
+    self.listSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 0.0)];
+    
+    self.listSearchBar.delegate = self;
+    //self.itemSearchBar.showsCancelButton = YES;
+    [self.listSearchBar becomeFirstResponder];
+    
+    UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.listSearchBar];
+    
+    switch (currentStatus) {
+        case kScreenListDisplay :
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:editButton, flexSpace, searchButton, flexSpace, addButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];
+        }    
+            break;
+        case kScreenListSearch :
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:searchItem,cancelButton, nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];
+        }    
+            break;          
+        case kScreenListEdit:
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:doneButton, flexSpace, searchButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];            
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [flexSpace release];
+    [addButton release];
+    [searchButton release];
+    [editButton release];
+    [doneButton release];
+    [cancelButton release];
+    [listSearchBar release];
+    [searchItem release];
+    
+}
+
+
 
 @end
