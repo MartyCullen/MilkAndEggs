@@ -402,6 +402,8 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 
     NSArray *lists = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
+    [fetchRequest release];
+    
     for (List *listItem in lists){
         listItem.listActive = [NSNumber numberWithBool:FALSE ];
     }
@@ -685,13 +687,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
     
-    self.listSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 0.0)];
-    
-    self.listSearchBar.delegate = self;
-    //self.itemSearchBar.showsCancelButton = YES;
-    [self.listSearchBar becomeFirstResponder];
-    
-    UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.listSearchBar];
     
     switch (currentStatus) {
         case kScreenListDisplay :
@@ -703,11 +698,37 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             break;
         case kScreenListSearch :
         {
+            
+            self.listSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 43.0)];
+            
+            self.listSearchBar.delegate = self;
+            UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.listSearchBar];
+            
             NSArray *itemsArray = [[NSArray alloc] initWithObjects:searchItem,cancelButton, nil];
             [toolBar setItems:itemsArray animated:YES];
             [itemsArray release];
+            [self.listSearchBar becomeFirstResponder];
+            [searchItem release];
+            [listSearchBar release];
         }    
-            break;          
+            break;       
+        case kScreenEditSearch:
+        {
+            
+            self.listSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 43.0)];
+            
+            self.listSearchBar.delegate = self;
+            
+            UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.listSearchBar];
+            
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:searchItem,flexSpace,cancelButton,flexSpace,doneButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release]; 
+            [searchItem release];
+            [listSearchBar release];
+            
+        }
+            break;        
         case kScreenListEdit:
         {
             NSArray *itemsArray = [[NSArray alloc] initWithObjects:doneButton, flexSpace, searchButton,  nil];
@@ -725,8 +746,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [editButton release];
     [doneButton release];
     [cancelButton release];
-    [listSearchBar release];
-    [searchItem release];
     
 }
 

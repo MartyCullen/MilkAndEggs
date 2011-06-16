@@ -85,6 +85,9 @@
    
    NSArray *listObjects = [managedObjectContext executeFetchRequest:fetchRequest
                                                               error:&error];
+   
+   [fetchRequest release];
+    
    if (![listObjects count]) {
       NSLog(@"No active list");
       self.navigationItem.title =@"No Active List";

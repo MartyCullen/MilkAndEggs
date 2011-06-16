@@ -24,8 +24,7 @@ typedef enum ScreenStatuses {
 {
 	UISearchBar *itemSearchBar;
 	UITableView *itemTableView;
-	UIBarButtonItem *savedButton;
-	UIToolbar *toolBar;
+    UIToolbar *toolBar;
     ScreenStatus currentStatus;
     
 @private
@@ -36,7 +35,6 @@ typedef enum ScreenStatuses {
 @property ScreenStatus currentStatus;
 @property (nonatomic, retain) UISearchBar *itemSearchBar;
 @property (nonatomic, retain) IBOutlet UITableView *itemTableView;
-@property (nonatomic, retain) UIBarButtonItem *savedButton;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolBar;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;

@@ -39,7 +39,7 @@ typedef enum ScreenStatuses {
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (IBAction) backgroundTap: (id) sender;
-- (void) toggleEdit;
+//- (void) toggleEdit;
 - (void) insertNewObject;
 - (NSPredicate *) getListPredicate;
 - (void) editPressed;
