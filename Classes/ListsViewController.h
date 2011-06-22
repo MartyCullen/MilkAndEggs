@@ -8,13 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "EditListViewController.h"
-
-typedef enum ScreenStatuses {
-    kScreenListEdit,
-    kScreenListDisplay,
-    kScreenListSearch,
-    kScreenEditSearch
-} ScreenStatus;
+#import "MilkAndEggs.h"
 
 
 @interface ListsViewController : UIViewController 

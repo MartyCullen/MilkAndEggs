@@ -13,8 +13,9 @@
 
 @synthesize selectionSearchBar;
 @synthesize selectionTableView;
-@synthesize savedButton;
+@synthesize toolBar;
 @synthesize activeList;
+@synthesize currentStatus;
 
 @synthesize fetchedResultsController=_fetchedResultsController;
 
@@ -32,20 +33,21 @@
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
-   [super viewDidLoad];
-	
+    [super viewDidLoad];
+	self.currentStatus = kScreenListDisplay;
+    [self drawButtons];
 	NSError *error = nil;
 	_fetchedResultsController = nil;
 	if (![[self fetchedResultsController] performFetch: &error]) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
-                                                                                 @"Error Loading Data")
-                                                      message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
-                                                                                                             @"Error was: %@.  Quitting."),
-                                                                [error localizedDescription],
-                                                                [error localizedDescription]]
-                                                     delegate: self
-                                            cancelButtonTitle: @"OK"
-                                            otherButtonTitles: nil];
+                                                                                   @"Error Loading Data")
+                                                        message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
+                                                                                                               @"Error was: %@.  Quitting."),
+                                                                  [error localizedDescription],
+                                                                  [error localizedDescription]]
+                                                       delegate: self
+                                              cancelButtonTitle: @"OK"
+                                              otherButtonTitles: nil];
 		[alert show];
 		[alert release];
 	}
@@ -56,59 +58,59 @@
 - (void) viewWillAppear:(BOOL)animated
 {
 	
-   // Create the fetch request for the entity.
-   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    // Create the fetch request for the entity.
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	// Edit the entity name as appropriate.
 	MilkAndEggsAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	NSManagedObjectContext *managedObjectContext = appDelegate.managedObjectContext;
 	
-   NSEntityDescription *entity = [NSEntityDescription entityForName: @"List" 
-                                             inManagedObjectContext: managedObjectContext];
-   
-   [fetchRequest setEntity: entity];
-   
-   NSPredicate *setPred = [NSPredicate predicateWithFormat: @"listActive == TRUE"];
-   
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"List" 
+                                              inManagedObjectContext: managedObjectContext];
+    
+    [fetchRequest setEntity: entity];
+    
+    NSPredicate *setPred = [NSPredicate predicateWithFormat: @"listActive == TRUE"];
+    
 	//NSPredicate *setPred = [self getListPredicate];
 	
 	[fetchRequest setPredicate:setPred];	
-   
-	// Edit the sort key as appropriate.
-   //NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"selectionSequence" 
-   //                                                               ascending: YES 
-   //                                                                selector: @selector(compare:)];
-	
-   //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
-   
-   //[fetchRequest setSortDescriptors: sortDescriptors];
-   NSError *error = nil;
-   
-   NSArray *listObjects = [managedObjectContext executeFetchRequest:fetchRequest
-                                                              error:&error];
-   
-   [fetchRequest release];
     
-   if (![listObjects count]) {
-      NSLog(@"No active list");
-      self.navigationItem.title =@"No Active List";
-   } else {
-      self.activeList = [listObjects objectAtIndex:0];
-      self.navigationItem.title = self.activeList.listName;
-   }
-   
-   self.fetchedResultsController.delegate = self;
+	// Edit the sort key as appropriate.
+    //NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"selectionSequence" 
+    //                                                               ascending: YES 
+    //                                                                selector: @selector(compare:)];
+	
+    //NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+    
+    //[fetchRequest setSortDescriptors: sortDescriptors];
+    NSError *error = nil;
+    
+    NSArray *listObjects = [managedObjectContext executeFetchRequest:fetchRequest
+                                                               error:&error];
+    
+    [fetchRequest release];
+    
+    if (![listObjects count]) {
+        NSLog(@"No active list");
+        self.navigationItem.title =@"No Active List";
+    } else {
+        self.activeList = [listObjects objectAtIndex:0];
+        self.navigationItem.title = self.activeList.listName;
+    }
+    
+    self.fetchedResultsController.delegate = self;
 	
 	
 	if (![self.fetchedResultsController performFetch: &error]) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
-                                                                                 @"Error Loading Data")
-                                                      message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
-                                                                                                             @"Error was: %@.  Quitting."),
-                                                                [error localizedDescription],
-                                                                [error localizedDescription]]
-                                                     delegate: self
-                                            cancelButtonTitle: @"OK"
-                                            otherButtonTitles: nil];
+                                                                                   @"Error Loading Data")
+                                                        message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
+                                                                                                               @"Error was: %@.  Quitting."),
+                                                                  [error localizedDescription],
+                                                                  [error localizedDescription]]
+                                                       delegate: self
+                                              cancelButtonTitle: @"OK"
+                                              otherButtonTitles: nil];
 		[alert show];
 		[alert release];
 	}
@@ -118,15 +120,7 @@
 - (void) viewDidAppear: (BOOL) animated
 {
 	[super viewDidAppear: animated];
-	if (!self.selectionTableView.editing) {
-      UIBarButtonItem *editButton = self.editButtonItem;
-      [editButton setTarget: self];
-      [editButton setAction: @selector(toggleEdit)];
-      
-      self.navigationItem.rightBarButtonItem = editButton;
-   }
 
-	
 	[self.selectionTableView reloadData];
 }
 
@@ -151,60 +145,34 @@
 	[self.selectionSearchBar resignFirstResponder];
 }
 
-- (void) toggleEdit
-{
-	BOOL editing = !self.selectionTableView.editing;
-	
-	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd 
-                                                                              target:self 
-                                                                              action:@selector(insertNewObject)];
-	UIBarButtonItem *editButton = self.editButtonItem;
-	
-	if (editing) {
-		self.savedButton = self.navigationItem.leftBarButtonItem;
-		self.navigationItem.leftBarButtonItem = editButton;
-		self.navigationItem.rightBarButtonItem = addButton;
-		self.navigationItem.leftBarButtonItem.title = @"Done";
-	} else {
-		self.navigationItem.leftBarButtonItem = self.savedButton;
-		[editButton setTarget: self];
-		[editButton setAction: @selector(toggleEdit)];
-		self.navigationItem.rightBarButtonItem = editButton;
-		self.navigationItem.rightBarButtonItem.title = @"Edit";
-	}
-	
-	[addButton release];	
-	
-	[self.selectionTableView setEditing: editing animated: YES];
-	
-}
+
 
 - (void)didReceiveMemoryWarning {
-   // Releases the view if it doesn't have a superview.
-   [super didReceiveMemoryWarning];
-   
-   // Release any cached data, images, etc. that aren't in use.
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc. that aren't in use.
 }
 
 - (void)viewDidUnload {
-   [super viewDidUnload];
-   // Release any retained subviews of the main view.
-   // e.g. self.myOutlet = nil;
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
 	
 	self.selectionTableView = nil;
 	self.selectionSearchBar = nil;
-	self.savedButton = nil;
+	self.toolBar = nil;
 	_fetchedResultsController = nil;
 	
 }
 
 
 - (void)dealloc {
-   [super dealloc];
+    [super dealloc];
 	
 	[self.selectionTableView release];
 	[self.selectionSearchBar release];
-	[self.savedButton release];
+	[self.toolBar release];
 	[_fetchedResultsController release];
 }
 
@@ -213,37 +181,37 @@
 
 - (void)insertNewObject 
 {
-	[self toggleEdit];
+	//[self toggleEdit];
 	
 	// Create a new instance of the entity managed by the fetched results controller.
-   NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-   NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
-   Selection *newManagedObject = [NSEntityDescription 
-                             insertNewObjectForEntityForName: [entity name] 
-                             inManagedObjectContext: context];
-   
+    NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+    NSEntityDescription *entity = [[self.fetchedResultsController fetchRequest] entity];
+    Selection *newManagedObject = [NSEntityDescription 
+                                   insertNewObjectForEntityForName: [entity name] 
+                                   inManagedObjectContext: context];
+    
 	// If appropriate, configure the new managed object.
 	
-   [self.activeList addListContainsSelectionObject:newManagedObject];
-   
+    [self.activeList addListContainsSelectionObject:newManagedObject];
+    
 	// Save the context.
 	
 	NSError *error = nil;
-   if (![context save: &error]) {
-      /*
-       Replace this implementation with code to handle the error appropriately.
-       
-       abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-       */ 
-      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-      abort();
-   }
+    if (![context save: &error]) {
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */ 
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
 	
 	EditSelectionViewController *editSelectionView = [[EditSelectionViewController alloc] initWithNibName: @"EditSelectionViewController"
-                                                                                   bundle: nil];
+                                                                                                   bundle: nil];
 	
 	editSelectionView.title = @"New Item Selection";
-   editSelectionView.selection = newManagedObject;
+    editSelectionView.selection = newManagedObject;
 	//editSelectionView.item = newManagedObject;
 	[self.navigationController pushViewController: editSelectionView animated: YES];
 	
@@ -261,34 +229,34 @@
 	NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
 	NSError *error;
 	if (![context save: &error]) {
-      /*
-       Replace this implementation with code to handle the error appropriately.
-       
-       abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-       */
-      NSLog(@"Unresolved error in configureCell: %@, %@", error, [error userInfo]);
-      abort();
-   }
+        /*
+         Replace this implementation with code to handle the error appropriately.
+         
+         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+         */
+        NSLog(@"Unresolved error in configureCell: %@, %@", error, [error userInfo]);
+        abort();
+    }
 	
 }
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView 
 {
 	NSUInteger count = [[self.fetchedResultsController sections] count];
-   return (count == 0) ? 1 : count;
+    return (count == 0) ? 1 : count;
 }
 
 
 - (NSInteger) tableView: (UITableView *) tableView 
   numberOfRowsInSection: (NSInteger)section 
 {
-   NSArray *sections = [self.fetchedResultsController sections];
-   NSUInteger count = 0;
-   if ([sections count]) {
-      id <NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
-      count = [sectionInfo numberOfObjects];
-   }
-   return count;
+    NSArray *sections = [self.fetchedResultsController sections];
+    NSUInteger count = 0;
+    if ([sections count]) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [sections objectAtIndex:section];
+        count = [sectionInfo numberOfObjects];
+    }
+    return count;
 }
 
 
@@ -297,24 +265,24 @@
           cellForRowAtIndexPath: (NSIndexPath *) indexPath 
 {
 	Selection *cellManagedObject = [self.fetchedResultsController objectAtIndexPath: indexPath]; 
-   
-   static NSString *CellIdentifier = @"selectionCellIdentifier";
-   
-   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-   if (cell == nil) {
-      cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle 
-                                     reuseIdentifier: CellIdentifier] 
-              autorelease];
-       
-       [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-   }
+    
+    static NSString *CellIdentifier = @"selectionCellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle 
+                                       reuseIdentifier: CellIdentifier] 
+                autorelease];
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
 	cell.accessoryType = UITableViewCellAccessoryNone;
 	cell.detailTextLabel.text = cellManagedObject.selectionContainsItem.itemDescription;
 	cell.textLabel.text = cellManagedObject.selectionContainsItem.itemName;
 	
 	// cell.gestureRecognizers = defaultApp.gestureRecognizers;
 	
-   return cell;
+    return cell;
 }
 
 
@@ -335,23 +303,23 @@ commitEditingStyle: (UITableViewCellEditingStyle) editingStyle
 {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		// Delete the managed object for the given index path
-      NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
-      
-      [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-      
+        NSManagedObjectContext *context = [self.fetchedResultsController managedObjectContext];
+        
+        [context deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        
 		// Save the context.
 		NSError *error;
-      error = nil;
-      if (![context save:&error]) {
-         /*
-          Replace this implementation with code to handle the error appropriately.
-          
-          abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-          */
-         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-         abort();
-      }
-   }   
+        error = nil;
+        if (![context save:&error]) {
+            /*
+             Replace this implementation with code to handle the error appropriately.
+             
+             abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
+             */
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }   
 }
 
 
@@ -359,7 +327,7 @@ commitEditingStyle: (UITableViewCellEditingStyle) editingStyle
 canMoveRowAtIndexPath: (NSIndexPath *) indexPath 
 {
 	// The table view should not be re-orderable.
-   return NO;
+    return NO;
 }
 
 /*
@@ -378,31 +346,31 @@ canMoveRowAtIndexPath: (NSIndexPath *) indexPath
 didSelectRowAtIndexPath: (NSIndexPath *) indexPath 
 {
 	// Navigation logic may go here -- for example, create and push another view controller.
-   
+    
 	Selection *selectedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-   
-   selectedObject.selectionComplete = [NSNumber numberWithBool:![selectedObject.selectionComplete boolValue]];
-   UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-   cell.selected = NO;
-   
+    
+    selectedObject.selectionComplete = [NSNumber numberWithBool:![selectedObject.selectionComplete boolValue]];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.selected = NO;
+    
 	if ([selectedObject.selectionComplete boolValue]) {
-      cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
-   } else {
-      cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
-   }
+        cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView 
-    willDisplayCell:(UITableViewCell *)cell 
+ willDisplayCell:(UITableViewCell *)cell 
 forRowAtIndexPath:(NSIndexPath *)indexPath {
-   
+    
 	Selection *selectedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
-   
-   if ([selectedObject.selectionComplete boolValue]) {
-      cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
-   } else {
-      cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
-   }
+    
+    if ([selectedObject.selectionComplete boolValue]) {
+        cell.imageView.image = [UIImage imageNamed:@"GrnCheck.png"];
+    } else {
+        cell.imageView.image = [UIImage imageNamed:@"BlankCheck.png"];
+    }
 }
 
 /*
@@ -417,52 +385,52 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark Fetched results controller
 
 - (NSFetchedResultsController *) fetchedResultsController {
-   
-   if (_fetchedResultsController != nil) {
-      return _fetchedResultsController;
-   }
-   /*
-    Set up the fetched results controller.
+    
+    if (_fetchedResultsController != nil) {
+        return _fetchedResultsController;
+    }
+    /*
+     Set up the fetched results controller.
 	 */
 	// Create the fetch request for the entity.
-   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	// Edit the entity name as appropriate.
 	MilkAndEggsAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
 	NSManagedObjectContext *managedObjectContext = appDelegate.managedObjectContext;
 	
-   NSEntityDescription *entity = [NSEntityDescription entityForName: @"Selection" 
-                                             inManagedObjectContext: managedObjectContext];
-   [fetchRequest setEntity: entity];
+    NSEntityDescription *entity = [NSEntityDescription entityForName: @"Selection" 
+                                              inManagedObjectContext: managedObjectContext];
+    [fetchRequest setEntity: entity];
 	// Set the batch size to a suitable number.
-   [fetchRequest setFetchBatchSize:20];
-   
+    [fetchRequest setFetchBatchSize:20];
+    
 	NSPredicate *setPred = [self getListPredicate];
 	
 	[fetchRequest setPredicate:setPred];	
-   
+    
 	// Edit the sort key as appropriate.
-   NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"selectionSequence" 
-                                                                  ascending: YES 
-                                                                   selector: @selector(compare:)];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"selectionSequence" 
+                                                                   ascending: YES 
+                                                                    selector: @selector(compare:)];
 	
-   NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
-   
-   [fetchRequest setSortDescriptors: sortDescriptors];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects: sortDescriptor, nil];
+    
+    [fetchRequest setSortDescriptors: sortDescriptors];
 	
 	// Edit the section name key path and cache name if appropriate.
 	// nil for section name key path means "no sections".
-   NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest 
-                                                                         managedObjectContext: managedObjectContext 
-                                                                           sectionNameKeyPath: nil 
-                                                                                    cacheName: nil];
-   frc.delegate = self;
-   _fetchedResultsController = frc;
-   
+    NSFetchedResultsController *frc = [[NSFetchedResultsController alloc] initWithFetchRequest: fetchRequest 
+                                                                          managedObjectContext: managedObjectContext 
+                                                                            sectionNameKeyPath: nil 
+                                                                                     cacheName: nil];
+    frc.delegate = self;
+    _fetchedResultsController = frc;
+    
 	[fetchRequest release];
 	[sortDescriptor release];
 	[sortDescriptors release];
 	
-   return _fetchedResultsController;
+    return _fetchedResultsController;
 }    
 
 - (NSPredicate *) getListPredicate
@@ -470,12 +438,12 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSPredicate *setPredicate = nil;
 	if ([self.selectionSearchBar.text length] > 0) {
 		setPredicate = [NSPredicate predicateWithFormat: @"selectionContainsItem.itemName contains[cd] %@ AND selectionOfList.listActive == TRUE", 
-                      self.selectionSearchBar.text];
+                        self.selectionSearchBar.text];
 	}
 	
 	if (setPredicate == nil) {
 		//setPredicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
-      setPredicate = [NSPredicate predicateWithFormat: @"selectionOfList.listActive == TRUE"];
+        setPredicate = [NSPredicate predicateWithFormat: @"selectionOfList.listActive == TRUE"];
 	}
 	
 	return setPredicate;
@@ -487,7 +455,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void) controllerWillChangeContent: (NSFetchedResultsController *) controller 
 {
-   [self.selectionTableView beginUpdates];
+    [self.selectionTableView beginUpdates];
 }
 
 
@@ -495,18 +463,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
    didChangeSection: (id <NSFetchedResultsSectionInfo>) sectionInfo
             atIndex: (NSUInteger) sectionIndex 
       forChangeType: (NSFetchedResultsChangeType) type {
-   
-   switch(type) {
-      case NSFetchedResultsChangeInsert:
-         [self.selectionTableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
-                           withRowAnimation:UITableViewRowAnimationFade];
-         break;
-         
-      case NSFetchedResultsChangeDelete:
-         [self.selectionTableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
-                           withRowAnimation:UITableViewRowAnimationFade];
-         break;
-   }
+    
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.selectionTableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+                                   withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.selectionTableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] 
+                                   withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
 }
 
 
@@ -516,34 +484,34 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
      forChangeType: (NSFetchedResultsChangeType) type
       newIndexPath: (NSIndexPath *) newIndexPath 
 {
-   
+    
 	// UITableView *tableView = self.documentTableView;
-   
-   switch(type) {
-         
-      case NSFetchedResultsChangeInsert:
-         [self.selectionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-         break;
-         
-      case NSFetchedResultsChangeDelete:
-         [self.selectionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-         break;
-         
-      case NSFetchedResultsChangeUpdate:
-         [self configureCell: [self.selectionTableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
-         break;
-         
-      case NSFetchedResultsChangeMove:
-         [self.selectionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-         [self.selectionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
-         break;
-   }
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.selectionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.selectionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [self configureCell: [self.selectionTableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [self.selectionTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.selectionTableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
 }
 
 
 - (void) controllerDidChangeContent: (NSFetchedResultsController *) controller 
 {
-   [self.selectionTableView endUpdates];
+    [self.selectionTableView endUpdates];
 }
 
 
@@ -567,14 +535,14 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.fetchedResultsController.fetchRequest setPredicate: [self getListPredicate]];
 	if (![self.fetchedResultsController performFetch: &error]) {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
-                                                                                 @"Error Loading Data")
-                                                      message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
-                                                                                                             @"Error was: %@.  Quitting."),
-                                                                [error localizedDescription],
-                                                                [error localizedDescription]]
-                                                     delegate: self
-                                            cancelButtonTitle: @"OK"
-                                            otherButtonTitles: nil];
+                                                                                   @"Error Loading Data")
+                                                        message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
+                                                                                                               @"Error was: %@.  Quitting."),
+                                                                  [error localizedDescription],
+                                                                  [error localizedDescription]]
+                                                       delegate: self
+                                              cancelButtonTitle: @"OK"
+                                              otherButtonTitles: nil];
 		[alert show];
 		[alert release];
 	}
@@ -596,21 +564,145 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSError *error;
 	
 	[self.fetchedResultsController.fetchRequest setPredicate: [self getListPredicate]];
-   if (![self.fetchedResultsController performFetch: &error]) {
-      UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
-                                                                                 @"Error Loading Data")
-                                                      message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
-                                                                                                             @"Error was: %@.  Quitting."),
-                                                                [error localizedDescription],
-                                                                [error localizedDescription]]
-                                                     delegate: self
-                                            cancelButtonTitle: @"OK"
-                                            otherButtonTitles: nil];
-      [alert show];
-      [alert release];
-   }
-   
-   [self.selectionTableView reloadData];	
+    if (![self.fetchedResultsController performFetch: &error]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle: NSLocalizedString(@"Error Loading Data",
+                                                                                   @"Error Loading Data")
+                                                        message: [NSString stringWithFormat: NSLocalizedString(@"Error was: %@.  Quitting.",
+                                                                                                               @"Error was: %@.  Quitting."),
+                                                                  [error localizedDescription],
+                                                                  [error localizedDescription]]
+                                                       delegate: self
+                                              cancelButtonTitle: @"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
+        [alert release];
+    }
+    
+    [self.selectionTableView reloadData];	
+}
+
+#pragma mark -
+#pragma mark Toolbar methods
+
+-(void) drawButtons 
+{
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject)];
+    UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchPressed)];
+    UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editPressed)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(donePressed)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPressed)];
+    
+    
+    
+    switch (currentStatus) {
+        case kScreenListDisplay :
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:editButton, flexSpace, searchButton, flexSpace, addButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];
+        }    
+            break;
+        case kScreenListSearch :
+        {
+            
+            self.selectionSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 43.0)];
+            
+            self.selectionSearchBar.delegate = self;
+            UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectionSearchBar];
+            
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:searchItem,cancelButton, nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];
+            [self.selectionSearchBar becomeFirstResponder];
+            [searchItem release];
+            [selectionSearchBar release];
+        }    
+            break;       
+        case kScreenEditSearch:
+        {
+            
+            self.selectionSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 230.0, 43.0)];
+            
+            self.selectionSearchBar.delegate = self;
+            
+            UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithCustomView:self.selectionSearchBar];
+            
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:searchItem,flexSpace,cancelButton,flexSpace,doneButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release]; 
+            [searchItem release];
+            [selectionSearchBar release];
+            
+        }
+            break;        
+        case kScreenListEdit:
+        {
+            NSArray *itemsArray = [[NSArray alloc] initWithObjects:doneButton, flexSpace, searchButton,  nil];
+            [toolBar setItems:itemsArray animated:YES];
+            [itemsArray release];            
+        }
+            break;
+        default:
+            break;
+    }
+    
+    [flexSpace release];
+    [addButton release];
+    [searchButton release];
+    [editButton release];
+    [doneButton release];
+    [cancelButton release];
+    
+    
+    
+}
+
+-(void) returnState {
+    [self.selectionTableView setEditing: FALSE animated: YES];
+    
+    self.currentStatus = kScreenListDisplay;
+    
+    [self drawButtons];
+}
+
+-(void) cancelPressed {
+    // clear out the search text
+    self.selectionSearchBar.text = @"";
+    // refreshes from coredata
+    [self getListPredicate];
+    // return first button bar state
+    [self returnState];
+}
+
+- (void) editPressed
+{
+	[self.selectionTableView setEditing: TRUE animated: YES];
+    
+    self.currentStatus = kScreenListEdit;
+    
+    [self drawButtons];
+}
+
+-(void) donePressed
+{
+    
+    [self returnState];
+    
+}
+
+-(void) searchPressed {
+    //[self.selectionTableView setEditing: FALSE animated: YES];
+    if (self.currentStatus == kScreenListDisplay) {
+        self.currentStatus = kScreenListSearch;
+    }
+    
+    if (self.currentStatus == kScreenListEdit) {
+        self.currentStatus = kScreenEditSearch;
+    }
+    
+    [self drawButtons];
 }
 
 @end

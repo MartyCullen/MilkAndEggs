@@ -76,6 +76,7 @@
 		A6D36E1613566B7C00C4CF7C /* EditListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditListViewController.h; sourceTree = "<group>"; };
 		A6D36E1713566B7C00C4CF7C /* EditListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditListViewController.m; sourceTree = "<group>"; };
 		A6D36E1813566B7C00C4CF7C /* EditListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditListViewController.xib; sourceTree = "<group>"; };
+		B1440B7213A987DB006FAD0C /* MilkAndEggs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MilkAndEggs.h; sourceTree = "<group>"; };
 		B1DE548B1368DF6F002CFEEB /* EditSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSelectionViewController.h; sourceTree = "<group>"; };
 		B1DE548C1368DF6F002CFEEB /* EditSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSelectionViewController.m; sourceTree = "<group>"; };
 		B1DE548D1368DF6F002CFEEB /* EditSelectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditSelectionViewController.xib; sourceTree = "<group>"; };
@@ -130,6 +131,7 @@
 				B1DE548B1368DF6F002CFEEB /* EditSelectionViewController.h */,
 				B1DE548C1368DF6F002CFEEB /* EditSelectionViewController.m */,
 				B1DE548D1368DF6F002CFEEB /* EditSelectionViewController.xib */,
+				B1440B7213A987DB006FAD0C /* MilkAndEggs.h */,
 			);
 			path = Classes;
 			sourceTree = "<group>";

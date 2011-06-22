@@ -11,29 +11,35 @@
 #import "Selection.h"
 #import "Item.h"
 #import "List.h"
+#import "MilkAndEggs.h"
 
 @interface ActiveListViewController  : UIViewController 
 <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate>
 {
-	UISearchBar *selectionSearchBar;
+	UIToolbar *toolBar;
+    UISearchBar *selectionSearchBar;
 	UITableView *selectionTableView;
-	UIBarButtonItem *savedButton;
-   List *activeList;
+    List *activeList;
+    ScreenStatus currentStatus;
 	
 @private
 	NSFetchedResultsController *_fetchedResultsController;
-   
+    
 }
 
 @property (nonatomic, retain) IBOutlet UISearchBar *selectionSearchBar;
 @property (nonatomic, retain) IBOutlet UITableView *selectionTableView;
-@property (nonatomic, retain) UIBarButtonItem *savedButton;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, retain) List *activeList;
+@property ScreenStatus currentStatus;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 - (IBAction) backgroundTap: (id) sender;
-- (void) toggleEdit;
+//- (void) toggleEdit;
 - (void) insertNewObject;
 - (NSPredicate *) getListPredicate;
+- (void) editPressed;
+- (void) donePressed;
+- (void) drawButtons;
 @end
