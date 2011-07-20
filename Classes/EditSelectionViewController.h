@@ -10,6 +10,7 @@
 #import "MilkAndEggsAppDelegate.h"
 #import "Selection.h"
 #import "Item.h"
+#import "List.h"
 
 @interface EditSelectionViewController : UIViewController 
 <UITableViewDelegate, UITableViewDataSource, NSFetchedResultsControllerDelegate, UISearchBarDelegate>

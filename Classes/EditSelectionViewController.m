@@ -261,10 +261,14 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
    
 	Item *selectedObject = [self.fetchedResultsController objectAtIndexPath:indexPath];
    
+// ******* If probably the issue.....
+    // need to see if itemName is already in selection.selectionContainsItem
+    
+    
    // test to see if item is already in our selection 
    if([selectedObject.itemOfSelection containsObject:self.selection]) {
       // remove it
-      //[selectedObject removeItemOfSelectionObject:self.selection];  
+      [selectedObject removeItemOfSelectionObject:self.selection];  
    } else { 
       [selectedObject addItemOfSelectionObject:self.selection]; 
 	}
@@ -341,14 +345,39 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 - (NSPredicate *) getListPredicate
 {
 	NSPredicate *setPredicate = nil;
+    // build predicate here for the items from the Selection List
+    
+    
 	if ([self.itemSearchBar.text length] > 0) {
 		setPredicate = [NSPredicate predicateWithFormat: @"itemName contains[cd] %@", 
                       self.itemSearchBar.text];
 	}
-	
-	if (setPredicate == nil) {
-		setPredicate = [NSPredicate predicateWithFormat: @"TRUEPREDICATE"];
-	}
+    
+    
+    if (setPredicate == nil) {
+        setPredicate = [NSPredicate predicateWithFormat:@"TRUEPREDICATE"];
+    }
+
+	//if (setPredicate == nil) {
+        
+        
+		//setPredicate = [NSPredicate predicateWithFormat: @"selection.selectionOfList.listName == %@", {'item1', 'item2', 'etc'} [[selection selectionOfList] listName]];
+        
+        //setPredicate = [NSPredicate predicateWithFormat: @"(SUBQUERY(selectionOfList,$x, $x.listName == %@).@count > 0)", selection.selectionOfList.listName];
+        
+        //setPredicate = [NSPredicate predicateWithFormat: 
+        //                @"NOT (ANY itemOfSelection.selectionOfList.listName == %@) AND itemName contains[cd] %@", 
+        //                self.selection.selectionOfList.listName,
+        //                self.itemSearchBar.text];
+        
+        
+        
+        //setPredicate = [NSPredicate predicateWithFormat: 
+        //                @"NOT (itemOfSelection.selectionOfList IN %@)", 
+        //                self.selection.selectionOfList];
+        
+        //NSLog(@"listName = %@", selection.selectionOfList.listName);
+	//}
 	
 	return setPredicate;
 }
