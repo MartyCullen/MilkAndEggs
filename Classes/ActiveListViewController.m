@@ -192,29 +192,27 @@
     
 	// If appropriate, configure the new managed object.
 	
-    [self.activeList addListContainsSelectionObject:newManagedObject];
+//    [self.activeList addListContainsSelectionObject:newManagedObject];
     
-	// Save the context.
-	
-	NSError *error = nil;
-    if (![context save: &error]) {
-        /*
-         Replace this implementation with code to handle the error appropriately.
-         
-         abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. If it is not possible to recover from the error, display an alert panel that instructs the user to quit the application by pressing the Home button.
-         */ 
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
-    }
 	
 	EditSelectionViewController *editSelectionView = [[EditSelectionViewController alloc] initWithNibName: @"EditSelectionViewController"
                                                                                                    bundle: nil];
 	
 	editSelectionView.title = @"New Item Selection";
     editSelectionView.selection = newManagedObject;
+    editSelectionView.activeList = activeList;
 	//editSelectionView.item = newManagedObject;
 	[self.navigationController pushViewController: editSelectionView animated: YES];
-	
+
+    // Save the context.
+
+//	NSError *error = nil;
+//    if (![context save: &error]) {
+//        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+//        abort();
+//    }
+    
+    
 	[editSelectionView release];
 	
 }

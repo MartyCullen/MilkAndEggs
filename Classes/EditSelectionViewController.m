@@ -15,6 +15,7 @@
 @synthesize itemSearchBar;
 @synthesize itemTableView;
 @synthesize selection;
+@synthesize activeList;
 
 
 @synthesize fetchedResultsController=_fetchedResultsController;
@@ -264,14 +265,26 @@ didSelectRowAtIndexPath: (NSIndexPath *) indexPath
 // ******* If probably the issue.....
     // need to see if itemName is already in selection.selectionContainsItem
     
+    BOOL itemInList = NO;
     
+    for(Selection *sel in activeList.listContainsSelection) {
+//        NSLog(sel.selectionContainsItem.itemName);
+        if([selectedObject.itemName isEqualToString:sel.selectionContainsItem.itemName]) {
+            itemInList = YES;
+            break;
+        }        
+    }
+    
+//    NSLog(@" selectedObject: %@, selection: %@", selectedObject.itemName, self.selection.selectionContainsItem.itemName); 
    // test to see if item is already in our selection 
-   if([selectedObject.itemOfSelection containsObject:self.selection]) {
-      // remove it
-      [selectedObject removeItemOfSelectionObject:self.selection];  
-   } else { 
+   if(!itemInList) {
+  //     NSLog(@"In !itemInList");
+      [activeList addListContainsSelectionObject:self.selection];
+
       [selectedObject addItemOfSelectionObject:self.selection]; 
-	}
+   } else {
+      [activeList removeListContainsSelectionObject:self.selection];
+   }
    
    NSError *error;
    if (![context save:&error]) {

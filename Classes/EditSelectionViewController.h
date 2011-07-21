@@ -18,7 +18,8 @@
       UISearchBar *itemSearchBar;
       UITableView *itemTableView;
       Selection *selection;
-      
+      List *activeList;
+    
    @private
       NSFetchedResultsController *_fetchedResultsController;
       
@@ -27,6 +28,7 @@
 @property (nonatomic, retain) IBOutlet UISearchBar *itemSearchBar;
 @property (nonatomic, retain) IBOutlet UITableView *itemTableView;
 @property (nonatomic, retain) Selection *selection;
+@property (nonatomic, retain) List *activeList;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
